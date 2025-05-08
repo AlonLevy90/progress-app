@@ -5,6 +5,9 @@ import com.example.progo.repositories.GoalRepository;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.example.progo.services.GoalService;
 
 public class GoalServiceImpl implements GoalService {
@@ -23,6 +26,9 @@ public class GoalServiceImpl implements GoalService {
 
     @Override
     public void delete(UUID id) {
+        if (!goalRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Goal not found");
+        }
         goalRepository.deleteById(id);
     }   
 }
